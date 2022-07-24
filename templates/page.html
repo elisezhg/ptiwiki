@@ -1,13 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../public/css/style.css">
-  <title><?php echo $title ?></title>
-</head>
-<body>
-  <h1><?php echo $title ?></h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title><?php echo $title ?></title>
+  </head>
+  <body>
+    <header>
+      <span>PtiWiki</span>
+      <div class="user">
+        <?php if (isset($_SESSION['idUser'])) { ?>
+        <span><?php echo $_SESSION['idUser'] ?></span>
+        <a href="?op=logout">Déconnexion</a>
+        <img src="assets/logout.svg" alt="logout" />
+        <?php } else { ?>
+        <a href="?op=login">Connexion</a>
+        <a href="?op=signup">Inscription</a>
+        <img src="assets/login.svg" alt="login" />
+        <?php } ?>
+      </div>
+    </header>
+
+    <div class="wrapper">
+      <nav>
+        <a href="?op=read&amp;file=PageAccueil">Accueil</a>
+        <a href="?op=read&amp;file=random">Page aléatoire</a>
+        <a href="?op=read&amp;file=all">Toutes les pages</a>
+      </nav>
+
+      <main>
+        <div class="content-header">
+          <h1><?php echo $title ?></h1>
+          <select name="action" id="action">
+            <option value="read">Lecture</option>
+            <option value="edit">Modifier</option>
+            <option value="delete">Supprimer</option>
+          </select>
+        </div>
+
+        <hr />
+        <?php echo $content ?>
+      </main>
+    </div>
+  </body>
 </html>
