@@ -13,10 +13,11 @@ function mainTPL($title, $body, $navlinks)
 	<head>
     	<meta http-equiv="content-type" content="text/html;charset=utf-8"/>
         <title>$title</title>
+        <link rel="stylesheet" type="text/css" href="../style.css"/>
     </head>
     <body>
         $body
-        <hr></hr>
+        <hr/>
         $navlinks
     </body>
 </html>

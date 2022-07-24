@@ -8,8 +8,19 @@
  *  Il serait préférable  d'utiliser une BD avec une meilleure gestion des usagers.
  */
 
-require_once 'Wiki.php';
-require_once 'Templates.php';
+require_once '../modules/Wiki.php';
+require_once '../modules/Templates.php';
+
+require('../modules/Database.php');
+
+// Test DB
+$resultat = $conn->prepare("SELECT * FROM User, Role where User.idRole = Role.idRole");
+$resultat->setFetchMode(PDO::FETCH_ASSOC);
+$resultat->execute();
+$tab = $resultat->fetchAll();
+for ($i = 0; $i < count($tab); $i++) {
+    echo implode(" | ", $tab[$i]) . "<br />";
+}
 
 //  analyser les paramètres d'entrée
 $method = $_SERVER['REQUEST_METHOD'];
@@ -24,7 +35,7 @@ if ($method == 'POST') {
 }
 
 
-$wiki = new Wiki("Wk");          // création de l'object Wiki
+$wiki = new Wiki("../modules/Wk");          // création de l'object Wiki
 $title = "PtiWiki - $file";
 $page = $wiki->getPage("$file.text");
 if ($page->exists()) $page->load();
@@ -52,6 +63,7 @@ switch ($op) {
             ),
             $navlinks
         );
+        include('../templates/page.html');
         break;
     case 'update':
         echo mainTPL(
