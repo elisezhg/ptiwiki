@@ -36,7 +36,7 @@ function editTPL($banner, $pageURL, $text)
 {
     return <<<WRITE
     $banner
-    <form method="POST" action="PtiWiki.php">
+    <form method="POST" action="/">
         <input type="hidden" name="op" value="save"></input>
         <input type="hidden" name="file" value="$pageURL"></input>
         <textarea rows="15" cols="80" name="data">$text</textarea>
@@ -66,24 +66,24 @@ function viewLinkTPL($file, $name)
         $op = "create";
         $style = " style='color:red'";
     }
-    return "<a href='PtiWiki.php?op=$op&file=$file'$style>$name</a>";
+    return "<a href='?op=$op&file=$file'$style>$name</a>";
 }
 
 function editLinkTPL($file, $name)
 {
-    return "<a href='PtiWiki.php?op=update&file=$file'>$name</a>";
+    return "<a href='?op=update&file=$file'>$name</a>";
 }
 
 function deleteLinkTPL($file, $name)
 {
-    return "<a href='PtiWiki.php?op=delete&file=$file'>$name</a>";
+    return "<a href='?op=delete&file=$file'>$name</a>";
 }
 
 function deleteTPL($pageURL)
 {
     return <<<DELETE
     <p>Êtes-vous certain de vouloir détruire la page "$pageURL"</p>
-    <form method="GET action="PtiWiki.php">
+    <form method="GET action="/">
         <input type="hidden" name="op" value="confirm-delete"></input>
         <input type="hidden" name="file" value="$pageURL"></input>
         <input type="submit" value="Détruire $pageURL!"></input>

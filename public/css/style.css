@@ -1,3 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@500&display=swap');
+
 body {
-  background-color: gray;
+  font-family: 'Inter', sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+}
+
+header span {
+  font-size: 1.5rem;
+  font-family: 'Roboto Mono', sans-serif;
+}
+
+header .user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header img {
+  width: 25px;
+  height: 25px;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.25rem;
+  font-weight: 600;
+  gap: 1.5rem;
+  min-width: 12.5rem;
+}
+
+nav a {
+  text-decoration: none;
+  padding-left: 1rem;
+  padding: 0.25rem 0 0.25rem 1rem;
+  box-sizing: border-box;
+}
+
+nav a:hover {
+  border-left: 3px solid #000;
+  padding-left: calc(1rem - 3px);
+}
+
+.wrapper {
+  display: flex;
+  padding: 2rem;
+  margin-top: 4rem;
+  gap: 3.25rem;
+}
+
+main {
+  flex-grow: 1;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.content-header h1 {
+  font-size: 2.25rem;
+  margin: 0;
+}
+
+.content-header select {
+  font-size: 1.25rem;
+  font-weight: 500;
+  width: 8rem;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+hr {
+  margin-bottom: 2rem;
+}
+
+a {
+  color: inherit;
 }

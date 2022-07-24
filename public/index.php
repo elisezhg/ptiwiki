@@ -1,26 +1,9 @@
 <?php
 
-/**
- * Création en PHP d'un système simple de Wiki
- *  inspiré très fortement par la structuration proposée dans  
- *        James Payne, Beginning Python, Wiley, 2010, p 430-431
- *  Les pages sont conservées dans un répertoire ouvert en écriture pour tous...
- *  Il serait préférable  d'utiliser une BD avec une meilleure gestion des usagers.
- */
-
 require_once '../modules/Wiki.php';
 require_once '../modules/Templates.php';
 
-require('../modules/Database.php');
-
-// Test DB
-$resultat = $conn->prepare("SELECT * FROM User, Role where User.idRole = Role.idRole");
-$resultat->setFetchMode(PDO::FETCH_ASSOC);
-$resultat->execute();
-$tab = $resultat->fetchAll();
-for ($i = 0; $i < count($tab); $i++) {
-    echo implode(" | ", $tab[$i]) . "<br />";
-}
+require_once '../modules/Database.php';
 
 //  analyser les paramètres d'entrée
 $method = $_SERVER['REQUEST_METHOD'];
@@ -29,14 +12,14 @@ if ($method == 'POST') {
     $file = $_POST["file"];
 } else {
     if (array_key_exists("op", $_GET)) $op = $_GET["op"];
-    else $op = "view";
+    else $op = "read";
     if (array_key_exists("file", $_GET)) $file = $_GET["file"];
     else $file = "PageAccueil";
 }
 
-
 $wiki = new Wiki("../modules/Wk");          // création de l'object Wiki
 $title = "PtiWiki - $file";
+$title = $file == "PageAccueil" ? "Accueil" : $file;
 $page = $wiki->getPage("$file.text");
 if ($page->exists()) $page->load();
 $navlinks = viewLinkTPL("PageAccueil", "Accueil") . " " . editLinkTPL($file, "Éditer");
@@ -55,14 +38,15 @@ switch ($op) {
         );
         break;
     case 'read':
-        echo mainTPL(
-            $title,
-            viewTPL(
-                bannerTPL($title),
-                markDown2HTML($page->getText())
-            ),
-            $navlinks
-        );
+        // echo mainTPL(
+        //     $title,
+        //     viewTPL(
+        //         bannerTPL($title),
+        //         markDown2HTML($page->getText())
+        //     ),
+        //     $navlinks
+        // );
+        $content = markDown2HTML($page->getText());
         include('../templates/page.html');
         break;
     case 'update':
