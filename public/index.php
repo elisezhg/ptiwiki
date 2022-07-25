@@ -1,8 +1,7 @@
 <?php
 
-require_once '../modules/Wiki.php';
-require_once '../modules/Templates.php';
-require_once '../modules/Database.php';
+require_once '../modules/database/Database.php';
+require_once '../modules/utils/MarkDown.php';
 
 //  analyser les paramètres d'entrée
 $method = $_SERVER['REQUEST_METHOD'];
