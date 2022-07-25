@@ -52,9 +52,7 @@ switch ($op) {
         }
         break;
     case 'save':
-        // truc adapté de http://www.tizag.com/phpT/php-magic-quotes.php
-        $newText = get_magic_quotes_gpc() ?
-            stripslashes($_POST['data']) : $_POST['data'];
+        $newText = $_POST['data'];
 
         // TODO: change for idUser once auth is implemented
         if (savePage($file, $newText, 64)) {
