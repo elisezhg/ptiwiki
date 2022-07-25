@@ -43,7 +43,7 @@ function markDown2HTML($texte)
     // remplacer les "double newline" par </p><p>
     $texte = preg_replace("/(\r?\n){2}/", "</p>\n<p>", $texte);
     // entourer le tout de <p></p>
-    return "<p>" . $texte . "</p>";
+    return "<div>" . $texte . "</div>";
 }
 
 // call back utilisé pour la génération des liens vers les pages Wiki indentifiées par les WikiWords

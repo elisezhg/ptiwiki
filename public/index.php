@@ -10,6 +10,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'POST') {
     $op = $_POST["op"];
     $file = $_POST["file"];
+    echo  "POST: op=$op, file=$file\n";
 } else {
     if (array_key_exists("op", $_GET)) $op = $_GET["op"];
     else $op = "read";
@@ -18,7 +19,6 @@ if ($method == 'POST') {
 }
 
 $wiki = new Wiki("../modules/Wk");          // création de l'object Wiki
-$title = "PtiWiki - $file";
 $title = $file == "PageAccueil" ? "Accueil" : $file;
 $page = $wiki->getPage("$file.text");
 if ($page->exists()) $page->load();
@@ -27,38 +27,23 @@ if ($file != "PageAccueil") $navlinks = $navlinks . " " . deleteLinkTPL($file, "
 
 switch ($op) {
     case 'create':
-        echo mainTPL(
-            $title,
-            editTPL(
-                bannerTPL("Création de $file"),
-                $file,
-                ""
-            ),
-            $navlinks
-        );
+        $title = "Création de la page $file";
+        $content = '';
+        include('../templates/page.html');
         break;
     case 'read':
-        // echo mainTPL(
-        //     $title,
-        //     viewTPL(
-        //         bannerTPL($title),
-        //         markDown2HTML($page->getText())
-        //     ),
-        //     $navlinks
-        // );
-        $content = markDown2HTML($page->getText());
+        $page = getPage($file);
+        $datetime = explode(" ", $page['lastModifiedDateTime']);
+        $date = $datetime[0];
+        $time = $datetime[1];
+        $author = $page['username'] ? $page['username'] : "[supprimé]";
+        $content = markDown2HTML($page['content']);
         include('../templates/page.html');
         break;
     case 'update':
-        echo mainTPL(
-            $title,
-            editTPL(
-                bannerTPL($title),
-                $file,
-                $page->getText()
-            ),
-            $navlinks
-        );
+        $page = getPage($file);
+        $content = $page['content'];
+        include('../templates/page.html');
         break;
     case 'delete':
         echo mainTPL($title, deleteTPL($file), $navlinks);

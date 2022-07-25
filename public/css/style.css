@@ -2,12 +2,13 @@
 
 body {
   font-family: 'Inter', sans-serif;
+  margin: 0;
 }
 
 header {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
 }
 
 header span {
@@ -27,6 +28,7 @@ header img {
 }
 
 nav {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   font-size: 1.25rem;
@@ -50,7 +52,6 @@ nav a:hover {
 .wrapper {
   display: flex;
   padding: 2rem;
-  margin-top: 4rem;
   gap: 3.25rem;
 }
 
@@ -63,24 +64,63 @@ main {
   justify-content: space-between;
   align-items: flex-end;
   gap: 1rem;
+  border-bottom: 1px solid black;
+  margin-bottom: 2rem;
 }
 
 .content-header h1 {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   margin: 0;
 }
 
-.content-header select {
-  font-size: 1.25rem;
-  font-weight: 500;
-  width: 8rem;
-  border: none;
-  padding: 0.25rem;
-  cursor: pointer;
+.content-header .actions {
+  display: flex;
+  align-items: center;
+  /* gap: 1em; */
+  text-decoration: none;
 }
 
-hr {
-  margin-bottom: 2rem;
+.actions img {
+  width: 20px;
+  height: 20px;
+  /* background-color: lightblue; */
+  border: 1px solid black;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 0.5rem;
+  margin-bottom: -5px;
+}
+
+.actions .selected img {
+  border-bottom: 1px solid white;
+}
+
+.last-modified {
+  margin-top: 3rem;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #777;
+}
+
+.edit-textarea {
+  font-size: 1.25rem;
+  width: 100%;
+  height: 500px;
+  resize: vertical;
+  border-radius: 8px;
+}
+
+.save-btn {
+  font-size: 1.1rem;
+  font-weight: 600;
+  height: 40px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
+  width: 180px;
+  text-align: center;
 }
 
 a {

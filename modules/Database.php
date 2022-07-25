@@ -51,7 +51,7 @@ function savePage($title, $text, $idUser)
         INSERT INTO
             Page (file, content, lastModifiedIdUser, lastModifiedDateTime)
         VALUES
-            (:title, :text, :idUser, NOW()))
+            (:title, :text, :idUser, CONVERT_TZ(NOW(),'SYSTEM','America/Montreal')))
     ");
     $resultat->bindParam(':file', $title);
     $resultat->bindParam(':text', $text);
