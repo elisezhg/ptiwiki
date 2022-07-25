@@ -2,14 +2,18 @@
 
 require_once '../modules/Wiki.php';
 require_once '../modules/Templates.php';
-
 require_once '../modules/Database.php';
 
 //  analyser les paramètres d'entrée
 $method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'POST') {
-    $op = $_POST["op"];
+    if ($_POST["cancel"]) {
+        $op = "read";
+    } else {
+        $op = $_POST["op"];
+    }
     $file = $_POST["file"];
+    // echo  "POST: op=$op, file=$file\n";
 } else {
     if (array_key_exists("op", $_GET)) $op = $_GET["op"];
     else $op = "read";
@@ -17,80 +21,48 @@ if ($method == 'POST') {
     else $file = "PageAccueil";
 }
 
-$wiki = new Wiki("../modules/Wk");          // création de l'object Wiki
-$title = "PtiWiki - $file";
 $title = $file == "PageAccueil" ? "Accueil" : $file;
-$page = $wiki->getPage("$file.text");
-if ($page->exists()) $page->load();
-$navlinks = viewLinkTPL("PageAccueil", "Accueil") . " " . editLinkTPL($file, "Éditer");
-if ($file != "PageAccueil") $navlinks = $navlinks . " " . deleteLinkTPL($file, "Détruire");
 
 switch ($op) {
     case 'create':
-        echo mainTPL(
-            $title,
-            editTPL(
-                bannerTPL("Création de $file"),
-                $file,
-                ""
-            ),
-            $navlinks
-        );
+        $title = "Création de la page $file";
+        $content = '';
+        include('../templates/page.html');
         break;
     case 'read':
-        // echo mainTPL(
-        //     $title,
-        //     viewTPL(
-        //         bannerTPL($title),
-        //         markDown2HTML($page->getText())
-        //     ),
-        //     $navlinks
-        // );
-        $content = markDown2HTML($page->getText());
+    case 'delete':
+        $page = getPage($file);
+        $datetime = explode(" ", $page['lastModifiedDateTime']);
+        $date = $datetime[0];
+        $time = $datetime[1];
+        $author = $page['username'] ? $page['username'] : "[supprimé]";
+        $content = markDown2HTML($page['content']);
         include('../templates/page.html');
         break;
     case 'update':
-        echo mainTPL(
-            $title,
-            editTPL(
-                bannerTPL($title),
-                $file,
-                $page->getText()
-            ),
-            $navlinks
-        );
-        break;
-    case 'delete':
-        echo mainTPL($title, deleteTPL($file), $navlinks);
+        $page = getPage($file);
+        $content = $page['content'];
+        include('../templates/page.html');
         break;
     case 'confirm-delete':
-        $page->delete();
-        echo mainTPL(
-            $title,
-            viewTPL(
-                "PtiWiki - [Page $file détruite!]",
-                markDown2HTML($wiki->getPage("PageAccueil.text")->load()->getText())
-            ),
-            $navlinks
-        );
+        if (deletePage($file)) {
+            header("Location: ?op=read&file=PageAccueil");
+        } else {
+            echo "Erreur: impossible de supprimer la page $file";
+        }
         break;
     case 'save':
         // truc adapté de http://www.tizag.com/phpT/php-magic-quotes.php
-        if (get_magic_quotes_gpc())
-            $newText = stripslashes($_POST['data']);
-        else
-            $newText = $_POST['data'];
-        $page->setText($newText)->save();
-        echo mainTPL(
-            $title,
-            viewTPL(
-                bannerTPL($title),
-                markDown2HTML($newText)
-            ),
-            $navlinks
-        );
+        $newText = get_magic_quotes_gpc() ?
+            stripslashes($_POST['data']) : $_POST['data'];
+
+        // TODO: change for idUser once auth is implemented
+        if (savePage($file, $newText, 64)) {
+            header("Location: ?op=read&file=$file");
+        } else {
+            echo "Erreur: impossible de sauvegarder la page $file";
+        }
         break;
     default:
-        echo mainTPL("Erreur", "Opération non implantée:" . $op, "");
-        break;
+        include('../templates/error.html');
 }

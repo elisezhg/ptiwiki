@@ -1,13 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@500&display=swap');
-
 body {
   font-family: 'Inter', sans-serif;
+  margin: 0;
 }
 
 header {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
 }
 
 header span {
@@ -27,6 +26,7 @@ header img {
 }
 
 nav {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   font-size: 1.25rem;
@@ -50,7 +50,6 @@ nav a:hover {
 .wrapper {
   display: flex;
   padding: 2rem;
-  margin-top: 4rem;
   gap: 3.25rem;
 }
 
@@ -63,24 +62,88 @@ main {
   justify-content: space-between;
   align-items: flex-end;
   gap: 1rem;
+  border-bottom: 1px solid black;
+  margin-bottom: 2rem;
 }
 
 .content-header h1 {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   margin: 0;
 }
 
-.content-header select {
-  font-size: 1.25rem;
-  font-weight: 500;
-  width: 8rem;
-  border: none;
-  padding: 0.25rem;
-  cursor: pointer;
+.content-header .actions {
+  display: flex;
+  align-items: center;
+  /* gap: 1em; */
+  text-decoration: none;
 }
 
-hr {
-  margin-bottom: 2rem;
+.actions img {
+  width: 20px;
+  height: 20px;
+  /* background-color: lightblue; */
+  border: 1px solid black;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 0.5rem;
+  margin-bottom: -5px;
+}
+
+.actions .selected img {
+  border-bottom: 1px solid white;
+}
+
+.last-modified {
+  margin-top: 3rem;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #777;
+}
+
+.edit-textarea {
+  font-size: 1.25rem;
+  width: 100%;
+  height: 500px;
+  resize: vertical;
+  border-radius: 8px;
+}
+
+.btn {
+  font-weight: 600;
+  height: 30px;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100px;
+  text-align: center;
+  margin-inline: 0.5rem;
+}
+
+.save-btn {
+  font-size: 1.1rem;
+  padding: 0.5rem 0.75rem;
+  height: 40px;
+  float: right;
+}
+
+.delete .text {
+  opacity: 0.4;
+}
+
+.delete .popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  background-color: white;
+  border-radius: 5px;
+  padding: 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 a {

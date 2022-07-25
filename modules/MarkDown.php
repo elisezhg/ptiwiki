@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Database.php';
+
 // création de tags HTML
 function tag($tag, $body, $attrs = "")
 {
@@ -8,10 +10,11 @@ function tag($tag, $body, $attrs = "")
     return "$out>$body</$tag>";
 }
 
+$pages = getAllPages();
+
 // transformer le simili MarkDown en HTML
 function markDown2HTML($texte)
 {
-    global $w;
     // montrer tout le HTML...
     $texte = preg_replace("/</", "&lt;", $texte);
     // remplacer les **xxx** par  <b>xxx</b>
@@ -43,54 +46,19 @@ function markDown2HTML($texte)
     // remplacer les "double newline" par </p><p>
     $texte = preg_replace("/(\r?\n){2}/", "</p>\n<p>", $texte);
     // entourer le tout de <p></p>
-    return "<p>" . $texte . "</p>";
+    return "<div>" . $texte . "</div>";
 }
 
 // call back utilisé pour la génération des liens vers les pages Wiki indentifiées par les WikiWords
 function viewLinkCallback($matches)
 {
-    return viewLinkTPL($matches[1], $matches[1]);
+    global $pages;
+    if (in_array($matches[0], $pages)) {
+        $op = "read";
+        $style = "";
+    } else { // new file, make the link in red and set op to create
+        $op = "create";
+        $style = " style='color:red'";
+    }
+    return "<a href='?op=$op&file=$matches[0]'$style>$matches[1]</a>";
 }
-
-// fonction pour tester isolément la transformation markDown2HTML
-//  attention la transformation de WikiWords ne fonctionne pas isolément...
-
-function markDown2HTMLTest()
-{
-    $body = <<<BODY
-# Le grand titre
-## Un sous-titre
-et voici du *texte en italique* et en **gras** et une liste 
-- item1
-- item2
-
-Un nouveau paragraphe
-
-Et voici [un lien](http://www.iro.umontreal.ca) qui devrait aller au Diro
-et une deuxième liste
-- item3
-- item4
-
-Et du html tel quel:
-<html>du texte</html>
-BODY;
-
-    echo <<<START
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-START;
-    $head = tag(
-        "head",
-        tag("meta", "", 'http-equiv="content-type" content="text/html;charset=utf-8"') .
-            tag("title", "une page de test")
-    );
-    echo tag(
-        "html",
-        "\n" . $head .
-            tag("body", markDown2HTML($body)),
-        "xmlns='http://www.w3.org/1999/xhtml'"
-    );
-}
-
-// appel du test unitaire
-// markDown2HTMLTest();

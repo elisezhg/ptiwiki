@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/style.css" />
     <title><?php echo $title ?></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <header>
@@ -33,15 +39,50 @@
       <main>
         <div class="content-header">
           <h1><?php echo $title ?></h1>
-          <select name="action" id="action">
-            <option value="read">Lecture</option>
-            <option value="edit">Modifier</option>
-            <option value="delete">Supprimer</option>
-          </select>
+
+          <div class="actions">
+            <!-- read -->
+            <a
+              href="?op=read&amp;file=<?php echo $file ?>"
+              class="<?=$op == 'read' ? 'selected' : '' ?>"
+            >
+              <img src="assets/eye.svg" alt="eye" />
+            </a>
+
+            <!-- edit -->
+            <a
+              href="?op=update&amp;file=<?php echo $file ?>"
+              class="<?=$op == 'update' || $op == 'create' ? 'selected' : '' ?>"
+            >
+              <img src="assets/pencil.svg" alt="pencil" />
+            </a>
+
+            <!-- delete -->
+            <?php if ($file != 'PageAccueil') { ?>
+            <a
+              href="?op=delete&amp;file=<?php echo $file ?>"
+              class="<?=$op == 'delete' ? 'selected' : '' ?>"
+            >
+              <img src="assets/trash.svg" alt="trash" />
+            </a>
+            <?php } ?>
+          </div>
         </div>
 
-        <hr />
-        <?php echo $content ?>
+        <div class="content">
+          <!-- show page content -->
+          <?php if ($op == 'read') { ?>
+          <?php include_once '../templates/partials/content.html' ?>
+
+          <!-- show textarea to edit/create page -->
+          <?php } elseif ($op == 'update' or $op == 'create') { ?>
+          <?php include_once '../templates/partials/edit.html' ?>
+
+          <!-- delete -->
+          <?php } elseif ($op == 'delete') { ?>
+          <?php include_once '../templates/partials/delete.html' ?>
+          <?php } ?>
+        </div>
       </main>
     </div>
   </body>
