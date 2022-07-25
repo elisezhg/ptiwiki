@@ -17,15 +17,13 @@ function getConnection()
     }
 }
 
-function checkPageExists($title)
+function getPages()
 {
     $conn = getConnection();
-    $resultat = $conn->prepare("SELECT * FROM Page WHERE title = :title");
-    $resultat->setFetchMode(PDO::FETCH_ASSOC);
-    $resultat->bindParam(':title', $title);
+    $resultat = $conn->prepare("SELECT title FROM Page");
     $resultat->execute();
-    $tab = $resultat->fetchAll();
-    return count($tab) > 0;
+    $pages = $resultat->fetchAll(PDO::FETCH_COLUMN, 0);
+    return $pages;
 }
 
 function getPage($title)
@@ -48,15 +46,17 @@ function savePage($title, $text, $idUser)
 {
     $conn = getConnection();
     $resultat = $conn->prepare("
-        INSERT INTO
-            Page (file, content, lastModifiedIdUser, lastModifiedDateTime)
+        REPLACE INTO
+            Page (title, content, lastModifiedIdUser, lastModifiedDateTime)
         VALUES
-            (:title, :text, :idUser, CONVERT_TZ(NOW(),'SYSTEM','America/Montreal')))
+            (:title, :text, :idUser, CONVERT_TZ(NOW(),'SYSTEM','America/Montreal'))
     ");
-    $resultat->bindParam(':file', $title);
+    echo "saving";
+    $resultat->bindParam(':title', $title);
     $resultat->bindParam(':text', $text);
     $resultat->bindParam(':idUser', $idUser);
     $resultat->execute();
+    return $resultat;
 }
 
 function deletePage($title)
@@ -65,6 +65,7 @@ function deletePage($title)
     $resultat = $conn->prepare("DELETE FROM Page WHERE title = :title");
     $resultat->bindParam(':title', $title);
     $resultat->execute();
+    return $resultat;
 }
 
 function getUser($id)
@@ -83,4 +84,5 @@ function deleteUser($id)
     $resultat = $conn->prepare("DELETE FROM User WHERE idUser = :id");
     $resultat->bindParam(':id', $id);
     $resultat->execute();
+    return $resultat;
 }

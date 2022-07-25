@@ -56,19 +56,6 @@ function bannerTPL($banner)
     return "<p style='color:green'>$banner</p><hr></hr>";
 }
 
-function viewLinkTPL($file, $name)
-{
-    global $wiki;
-    if (file_exists("{$wiki->getBase()}/$file.text")) {
-        $op = "read";
-        $style = "";
-    } else { // new file, make the link in red and set op to create
-        $op = "create";
-        $style = " style='color:red'";
-    }
-    return "<a href='?op=$op&file=$file'$style>$name</a>";
-}
-
 function editLinkTPL($file, $name)
 {
     return "<a href='?op=update&file=$file'>$name</a>";

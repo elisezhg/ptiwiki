@@ -22,8 +22,6 @@ $wiki = new Wiki("../modules/Wk");          // création de l'object Wiki
 $title = $file == "PageAccueil" ? "Accueil" : $file;
 $page = $wiki->getPage("$file.text");
 if ($page->exists()) $page->load();
-$navlinks = viewLinkTPL("PageAccueil", "Accueil") . " " . editLinkTPL($file, "Éditer");
-if ($file != "PageAccueil") $navlinks = $navlinks . " " . deleteLinkTPL($file, "Détruire");
 
 switch ($op) {
     case 'create':
@@ -65,15 +63,12 @@ switch ($op) {
             $newText = stripslashes($_POST['data']);
         else
             $newText = $_POST['data'];
-        $page->setText($newText)->save();
-        echo mainTPL(
-            $title,
-            viewTPL(
-                bannerTPL($title),
-                markDown2HTML($newText)
-            ),
-            $navlinks
-        );
+        $res = savePage($file, $newText, 64); // TODO: change for idUser once auth is implemented
+        if ($res) {
+            header("Location: ?op=read&file=$file");
+        } else {
+            echo "Erreur: impossible de sauvegarder la page $file";
+        }
         break;
     default:
         echo mainTPL("Erreur", "Opération non implantée:" . $op, "");
