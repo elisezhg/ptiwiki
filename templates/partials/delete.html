@@ -1,0 +1,15 @@
+<div class="delete">
+  <div class="text">
+    <?php include_once '../templates/partials/content.html' ?>
+  </div>
+
+  <div class="popup">
+    <p>Supprimer "<?php echo $file ?>"?</p>
+    <form method="POST" action="/">
+      <input type="hidden" name="op" value="confirm-delete" />
+      <input type="hidden" name="file" value="<?php echo $file ?>" />
+      <input type="submit" name="cancel" value="Annuler" class="btn" />
+      <input type="submit" value="Supprimer!" class="btn" />
+    </form>
+  </div>
+</div>

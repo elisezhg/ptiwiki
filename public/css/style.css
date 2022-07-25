@@ -108,17 +108,42 @@ main {
   border-radius: 8px;
 }
 
-.save-btn {
-  font-size: 1.1rem;
+.btn {
   font-weight: 600;
-  height: 40px;
-  padding: 0.5rem 0.75rem;
+  height: 30px;
+  padding: 0.25rem 0.5rem;
   border: 1px solid black;
   border-radius: 5px;
   cursor: pointer;
-  float: right;
-  width: 180px;
+  width: 100px;
   text-align: center;
+  margin-inline: 0.5rem;
+}
+
+.save-btn {
+  font-size: 1.1rem;
+  padding: 0.5rem 0.75rem;
+  height: 40px;
+  float: right;
+}
+
+.delete .text {
+  opacity: 0.4;
+}
+
+.delete .popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  background-color: white;
+  border-radius: 5px;
+  padding: 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 a {

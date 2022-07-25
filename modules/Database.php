@@ -17,7 +17,7 @@ function getConnection()
     }
 }
 
-function getPages()
+function getAllPages()
 {
     $conn = getConnection();
     $resultat = $conn->prepare("SELECT title FROM Page");

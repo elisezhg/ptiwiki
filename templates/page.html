@@ -41,47 +41,46 @@
           <h1><?php echo $title ?></h1>
 
           <div class="actions">
+            <!-- read -->
             <a
               href="?op=read&amp;file=<?php echo $file ?>"
               class="<?=$op == 'read' ? 'selected' : '' ?>"
             >
               <img src="assets/eye.svg" alt="eye" />
             </a>
+
+            <!-- edit -->
             <a
               href="?op=update&amp;file=<?php echo $file ?>"
-              class="<?=$op == 'update' ? 'selected' : '' ?>"
+              class="<?=$op == 'update' || $op == 'create' ? 'selected' : '' ?>"
             >
               <img src="assets/pencil.svg" alt="pencil" />
             </a>
+
+            <!-- delete -->
+            <?php if ($file != 'PageAccueil') { ?>
             <a
               href="?op=delete&amp;file=<?php echo $file ?>"
               class="<?=$op == 'delete' ? 'selected' : '' ?>"
             >
               <img src="assets/trash.svg" alt="trash" />
             </a>
+            <?php } ?>
           </div>
         </div>
 
         <div class="content">
-          <!-- read -->
+          <!-- show page content -->
           <?php if ($op == 'read') { ?>
-          <?php echo $content ?>
-          <div class="last-modified">
-            Dernière modification le
-            <?php echo $date ?>
-            à
-            <?php echo $time ?>
-            par
-            <?php echo $author ?>
-          </div>
+          <?php include_once '../templates/partials/content.html' ?>
 
-          <!-- update or create -->
+          <!-- show textarea to edit/create page -->
           <?php } elseif ($op == 'update' or $op == 'create') { ?>
           <?php include_once '../templates/partials/edit.html' ?>
 
           <!-- delete -->
           <?php } elseif ($op == 'delete') { ?>
-          delete
+          <?php include_once '../templates/partials/delete.html' ?>
           <?php } ?>
         </div>
       </main>

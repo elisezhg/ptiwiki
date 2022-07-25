@@ -10,7 +10,7 @@ function tag($tag, $body, $attrs = "")
     return "$out>$body</$tag>";
 }
 
-$pages = getPages();
+$pages = getAllPages();
 
 // transformer le simili MarkDown en HTML
 function markDown2HTML($texte)
