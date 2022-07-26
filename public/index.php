@@ -11,30 +11,34 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 if (!empty($_GET["action"])) {
     $action = $_GET['action'];
-    // echo "Action: " . $action;
     if ($action == 'logout') {
         logout();
-    } else {
+    } elseif ($action == 'login' || $action == 'register') {
         include '../templates/authentication.html';
         return;
+    } else {
+        $errorMessage = 'Action non implémentée: ' . $action;
+        include('../templates/error.html');
+        return;
     }
-}
-
-if ($method == 'POST') {
-    echo 'inside post';
-
-    if ($_POST["cancel"]) {
+} elseif ($method == 'POST') {
+    if ($_POST["cancel"] || empty($_GET["idUser"])) {
         $op = "read";
     } else {
         $op = $_POST["op"];
     }
     $file = $_POST["file"];
-    echo  "POST: op=$op, file=$file\n";
 } else {
     if (array_key_exists("op", $_GET)) $op = $_GET["op"];
     else $op = "read";
     if (array_key_exists("file", $_GET)) $file = $_GET["file"];
     else $file = "PageAccueil";
+}
+
+if ($op != 'read' && empty($_SESSION['username'])) {
+    $errorMessage = 'Vous devez être connecté pour pouvoir contribuer';
+    include('../templates/error.html');
+    return;
 }
 
 $title = $file == "PageAccueil" ? "Accueil" : $file;
