@@ -22,7 +22,7 @@ if (!empty($_GET["action"])) {
         return;
     }
 } elseif ($method == 'POST') {
-    if ($_POST["cancel"] || empty($_GET["idUser"])) {
+    if ($_POST["cancel"]) {
         $op = "read";
     } else {
         $op = $_POST["op"];
@@ -41,7 +41,6 @@ if ($op != 'read' && empty($_SESSION['username'])) {
     return;
 }
 
-$title = $file == "PageAccueil" ? "Accueil" : $file;
 
 switch ($op) {
     case 'create':
@@ -51,7 +50,9 @@ switch ($op) {
         break;
     case 'read':
     case 'delete':
-        $page = getPage($file);
+        $page = $file != 'random' ? getPage($file) : getRandomPage();
+        $file = $file != 'random' ? $file : $page['title'];
+        $title = $file == "PageAccueil" ? "Accueil" : $file;
         $datetime = explode(" ", $page['lastModifiedDateTime']);
         $date = $datetime[0];
         $time = $datetime[1];
@@ -61,6 +62,8 @@ switch ($op) {
         break;
     case 'update':
         $page = getPage($file);
+        $file = $file != 'random' ? $file : $page['title'];
+        $title = $file == "PageAccueil" ? "Accueil" : $file;
         $content = $page['content'];
         include('../templates/page.html');
         break;

@@ -43,6 +43,23 @@ function getPage($title)
     return $tab[0];
 }
 
+function getRandomPage()
+{
+    global $conn;
+    $resultat = $conn->prepare("
+        SELECT title, content, username, lastModifiedDateTime
+        FROM Page INNER JOIN User
+        ON Page.lastModifiedIdUser = User.idUser
+        WHERE title != 'PageAccueil'
+        ORDER BY RAND()
+        LIMIT 1
+    ");
+    $resultat->setFetchMode(PDO::FETCH_ASSOC);
+    $resultat->execute();
+    $tab = $resultat->fetchAll();
+    return $tab[0];
+}
+
 function savePage($title, $text, $idUser)
 {
     global $conn;

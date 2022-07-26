@@ -19,7 +19,7 @@
       <div class="user">
         <?php if (!empty($_SESSION['username'])) { ?>
         <span><?php echo $_SESSION['username'] ?></span>
-        <a href="<?=basename($_SERVER['REQUEST_URI']) ?>&amp;action=logout">
+        <a href="?action=logout&amp;<?=basename($_SERVER['REQUEST_URI']) ?>">
           <img src="assets/logout.svg" alt="logout" />
         </a>
         <?php } else { ?>
