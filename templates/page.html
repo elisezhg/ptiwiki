@@ -15,15 +15,16 @@
   </head>
   <body>
     <header>
-      <span>PtiWiki</span>
+      <span class="logo">PtiWiki</span>
       <div class="user">
-        <?php if (isset($_SESSION['idUser'])) { ?>
-        <span><?php echo $_SESSION['idUser'] ?></span>
-        <a href="?op=logout">Déconnexion</a>
-        <img src="assets/logout.svg" alt="logout" />
+        <?php if (!empty($_SESSION['username'])) { ?>
+        <span><?php echo $_SESSION['username'] ?></span>
+        <a href="?action=logout">
+          <img src="assets/logout.svg" alt="logout" />
+        </a>
         <?php } else { ?>
-        <a href="?op=login">Connexion</a>
-        <a href="?op=signup">Inscription</a>
+        <a href="?action=login">Connexion</a>
+        <a href="?action=register">Inscription</a>
         <img src="assets/login.svg" alt="login" />
         <?php } ?>
       </div>
@@ -39,8 +40,8 @@
       <main>
         <div class="content-header">
           <h1><?php echo $title ?></h1>
-
           <div class="actions">
+            <?php if (!empty($_SESSION['username'])): ?>
             <!-- read -->
             <a
               href="?op=read&amp;file=<?php echo $file ?>"
@@ -58,14 +59,15 @@
             </a>
 
             <!-- delete -->
-            <?php if ($file != 'PageAccueil') { ?>
+            <?php if ($file != 'PageAccueil'): ?>
             <a
               href="?op=delete&amp;file=<?php echo $file ?>"
               class="<?=$op == 'delete' ? 'selected' : '' ?>"
             >
               <img src="assets/trash.svg" alt="trash" />
             </a>
-            <?php } ?>
+            <?php endif ?>
+            <?php endif ?>
           </div>
         </div>
 

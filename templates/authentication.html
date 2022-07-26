@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <title>
+      PtiWiki - <?=$action == "login" ? "Connexion" : "Inscription" ?>
+    </title>
+  </head>
+  <body>
+    <header>
+      <span>PtiWiki</span>
+    </header>
+
+    <main class="form-container">
+      <a href="/" class="cancel-btn">Annuler</a>
+      <h1><?=$action == "login" ? "Connexion" : "Inscription" ?></h1>
+      <form action="" method="POST">
+        <input
+          type="hidden"
+          name="action"
+          value="<?=$action == 'login' ? 'login' : 'register' ?>"
+        />
+        <div class="field">
+          <label for="username">Identifiant</label><br />
+          <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            name="username"
+          />
+        </div>
+
+        <div class="field">
+          <label for="password">Mot de passe</label><br />
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            name="password"
+          />
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit" class="form-btn">
+            <?=$action == "login" ? "Se connecter" : "S'inscrire" ?>
+          </button>
+          <a href="?action=<?=$action == 'login' ? 'register' : 'login' ?>"
+            ><?=$action == "login" ? "S'inscrire" : "Se connecter" ?></a
+          >
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

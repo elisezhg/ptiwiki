@@ -1,18 +1,35 @@
 <?php
 
+require_once '../modules/account/Login.php';
+require_once '../modules/account/Logout.php';
+require_once '../modules/account/Register.php';
 require_once '../modules/database/Database.php';
 require_once '../modules/utils/MarkDown.php';
 
 //  analyser les paramètres d'entrée
 $method = $_SERVER['REQUEST_METHOD'];
+
+if (!empty($_GET["action"])) {
+    $action = $_GET['action'];
+    // echo "Action: " . $action;
+    if ($action == 'logout') {
+        logout();
+    } else {
+        include '../templates/authentication.html';
+        return;
+    }
+}
+
 if ($method == 'POST') {
+    echo 'inside post';
+
     if ($_POST["cancel"]) {
         $op = "read";
     } else {
         $op = $_POST["op"];
     }
     $file = $_POST["file"];
-    // echo  "POST: op=$op, file=$file\n";
+    echo  "POST: op=$op, file=$file\n";
 } else {
     if (array_key_exists("op", $_GET)) $op = $_GET["op"];
     else $op = "read";
@@ -47,19 +64,20 @@ switch ($op) {
         if (deletePage($file)) {
             header("Location: ?op=read&file=PageAccueil");
         } else {
-            echo "Erreur: impossible de supprimer la page $file";
+            $errorMessage = "Impossible de supprimer la page $file";
+            include('../templates/error.html');
         }
         break;
     case 'save':
         $newText = $_POST['data'];
-
-        // TODO: change for idUser once auth is implemented
-        if (savePage($file, $newText, 64)) {
+        if (savePage($file, $newText, $_SESSION['idUser'])) {
             header("Location: ?op=read&file=$file");
         } else {
-            echo "Erreur: impossible de sauvegarder la page $file";
+            $errorMessage = "Impossible de sauvegarder la page $file";
+            include('../templates/error.html');
         }
         break;
     default:
+        $errorMessage = 'Opération non implémentée: ' . $op;
         include('../templates/error.html');
 }
