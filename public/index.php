@@ -1,19 +1,33 @@
 <?php
 
-require_once '../modules/Wiki.php';
-require_once '../modules/Templates.php';
-require_once '../modules/Database.php';
+require_once '../modules/account/Login.php';
+require_once '../modules/account/Logout.php';
+require_once '../modules/account/Register.php';
+require_once '../modules/database/Database.php';
+require_once '../modules/utils/MarkDown.php';
 
 //  analyser les paramètres d'entrée
 $method = $_SERVER['REQUEST_METHOD'];
-if ($method == 'POST') {
+
+if (!empty($_GET["action"])) {
+    $action = $_GET['action'];
+    if ($action == 'logout') {
+        logout();
+    } elseif ($action == 'login' || $action == 'register') {
+        include '../templates/authentication.html';
+        return;
+    } else {
+        $errorMessage = 'Action non implémentée: ' . $action;
+        include('../templates/error.html');
+        return;
+    }
+} elseif ($method == 'POST') {
     if ($_POST["cancel"]) {
         $op = "read";
     } else {
         $op = $_POST["op"];
     }
     $file = $_POST["file"];
-    // echo  "POST: op=$op, file=$file\n";
 } else {
     if (array_key_exists("op", $_GET)) $op = $_GET["op"];
     else $op = "read";
@@ -21,7 +35,12 @@ if ($method == 'POST') {
     else $file = "PageAccueil";
 }
 
-$title = $file == "PageAccueil" ? "Accueil" : $file;
+if ($op != 'read' && empty($_SESSION['username'])) {
+    $errorMessage = 'Vous devez être connecté pour pouvoir contribuer';
+    include('../templates/error.html');
+    return;
+}
+
 
 switch ($op) {
     case 'create':
@@ -31,7 +50,9 @@ switch ($op) {
         break;
     case 'read':
     case 'delete':
-        $page = getPage($file);
+        $page = $file != 'random' ? getPage($file) : getRandomPage();
+        $file = $file != 'random' ? $file : $page['title'];
+        $title = $file == "PageAccueil" ? "Accueil" : $file;
         $datetime = explode(" ", $page['lastModifiedDateTime']);
         $date = $datetime[0];
         $time = $datetime[1];
@@ -41,6 +62,8 @@ switch ($op) {
         break;
     case 'update':
         $page = getPage($file);
+        $file = $file != 'random' ? $file : $page['title'];
+        $title = $file == "PageAccueil" ? "Accueil" : $file;
         $content = $page['content'];
         include('../templates/page.html');
         break;
@@ -48,19 +71,20 @@ switch ($op) {
         if (deletePage($file)) {
             header("Location: ?op=read&file=PageAccueil");
         } else {
-            echo "Erreur: impossible de supprimer la page $file";
+            $errorMessage = "Impossible de supprimer la page $file";
+            include('../templates/error.html');
         }
         break;
     case 'save':
         $newText = $_POST['data'];
-
-        // TODO: change for idUser once auth is implemented
-        if (savePage($file, $newText, 64)) {
+        if (savePage($file, $newText, $_SESSION['idUser'])) {
             header("Location: ?op=read&file=$file");
         } else {
-            echo "Erreur: impossible de sauvegarder la page $file";
+            $errorMessage = "Impossible de sauvegarder la page $file";
+            include('../templates/error.html');
         }
         break;
     default:
+        $errorMessage = 'Opération non implémentée: ' . $op;
         include('../templates/error.html');
 }

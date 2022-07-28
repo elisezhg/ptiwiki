@@ -2,6 +2,8 @@
 
 include('Config.php');
 
+$conn = getConnection();
+
 function getConnection()
 {
     try {
@@ -11,15 +13,14 @@ function getConnection()
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conn;
     } catch (PDOException $e) {
-        /* S'il y a une erreur, une exception est levée */
-        echo "Erreur !: " . $e->getMessage() . "<br/>";
-        die();
+        $errorMessage = 'Erreur lors de la connexion à la base de données: ' . $e->getMessage();
+        include('../../templates/error.html');
     }
 }
 
 function getAllPages()
 {
-    $conn = getConnection();
+    global $conn;
     $resultat = $conn->prepare("SELECT title FROM Page");
     $resultat->execute();
     $pages = $resultat->fetchAll(PDO::FETCH_COLUMN, 0);
@@ -28,12 +29,12 @@ function getAllPages()
 
 function getPage($title)
 {
-    $conn = getConnection();
+    global $conn;
     $resultat = $conn->prepare("
         SELECT content, username, lastModifiedDateTime
-        FROM Page LEFT JOIN User
+        FROM Page INNER JOIN User
         ON Page.lastModifiedIdUser = User.idUser
-        AND title = :title
+        WHERE title = :title
     ");
     $resultat->setFetchMode(PDO::FETCH_ASSOC);
     $resultat->bindParam(':title', $title);
@@ -42,9 +43,26 @@ function getPage($title)
     return $tab[0];
 }
 
+function getRandomPage()
+{
+    global $conn;
+    $resultat = $conn->prepare("
+        SELECT title, content, username, lastModifiedDateTime
+        FROM Page INNER JOIN User
+        ON Page.lastModifiedIdUser = User.idUser
+        WHERE title != 'PageAccueil'
+        ORDER BY RAND()
+        LIMIT 1
+    ");
+    $resultat->setFetchMode(PDO::FETCH_ASSOC);
+    $resultat->execute();
+    $tab = $resultat->fetchAll();
+    return $tab[0];
+}
+
 function savePage($title, $text, $idUser)
 {
-    $conn = getConnection();
+    global $conn;
     $resultat = $conn->prepare("
         REPLACE INTO
             Page (title, content, lastModifiedIdUser, lastModifiedDateTime)
@@ -68,19 +86,35 @@ function deletePage($title)
     return $resultat;
 }
 
-function getUser($id)
+function getUser($username)
 {
-    $conn = getConnection();
-    $resultat = $conn->prepare("SELECT * FROM User WHERE idUser = :id");
-    $resultat->bindParam(':id', $id);
+    global $conn;
+    $resultat = $conn->prepare("SELECT * FROM User WHERE username = :username");
+    $resultat->bindParam(':username', $username);
     $resultat->execute();
     $tab = $resultat->fetchAll();
     return $tab[0];
 }
 
+function createUser($username, $password)
+{
+    global $conn;
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    $resultat = $conn->prepare("
+        INSERT INTO
+            User (username, passwordHash)
+        VALUES (:username, :passwordHash)
+    ");
+    $resultat->bindParam(':username', $username);
+    $resultat->bindParam(':passwordHash', $passwordHash);
+    $resultat->execute();
+    echo "created acc";
+    return $resultat;
+}
+
 function deleteUser($id)
 {
-    $conn = getConnection();
+    global $conn;
     $resultat = $conn->prepare("DELETE FROM User WHERE idUser = :id");
     $resultat->bindParam(':id', $id);
     $resultat->execute();

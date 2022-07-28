@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Database.php';
+require_once __DIR__ . '/../database/Database.php';
 
 // création de tags HTML
 function tag($tag, $body, $attrs = "")
