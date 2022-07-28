@@ -9,7 +9,10 @@
   </head>
   <body>
     <header>
-      <span>PtiWiki</span>
+      <div class="logo">
+        <img src="assets/logo.svg" alt="logo" />
+        <span>PtiWiki</span>
+      </div>
       <div class="user">
         <?php if (isset($_SESSION['idUser'])) { ?>
         <span><?php echo $_SESSION['idUser'] ?></span>

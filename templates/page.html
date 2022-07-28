@@ -9,7 +9,10 @@
   </head>
   <body>
     <header>
-      <span class="logo">PtiWiki</span>
+      <div class="logo">
+        <img src="assets/logo.svg" alt="logo" />
+        <span>PtiWiki</span>
+      </div>
       <div class="user">
         <?php if (!empty($_SESSION['username'])) { ?>
         <span><?php echo $_SESSION['username'] ?></span>

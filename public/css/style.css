@@ -1,29 +1,5 @@
-/* Fonts */
-
-@font-face {
-  font-family: 'Inter';
-  src: url(../assets/fonts/Inter/Inter-Regular.ttf);
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url(../assets/fonts/Inter/Inter-SemiBold.ttf);
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url(../assets/fonts/Inter/Inter-Bold.ttf);
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: 'Roboto Mono';
-  src: url(../assets/fonts/Roboto_Mono/RobotoMono-Medium.ttf);
-}
-
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
 }
 
@@ -33,15 +9,11 @@ header {
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 1rem;
+  height: 3.5rem;
+  box-sizing: border-box;
 }
 
-header .logo {
-  font-size: 1.5rem;
-  font-family: 'Roboto Mono', sans-serif;
-}
-
-header .user {
-  font-weight: 600;
+header div {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -52,6 +24,16 @@ header img {
   height: 25px;
 }
 
+header .logo {
+  font-size: 1.5rem;
+  transform: scale(1, 1.1);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+header .user {
+  font-weight: 600;
+}
+
 /* Navigation bar */
 
 nav {
@@ -59,7 +41,6 @@ nav {
   display: flex;
   flex-direction: column;
   font-size: 1.25rem;
-  font-weight: 600;
   gap: 1.5rem;
   min-width: 12.5rem;
 }
@@ -74,6 +55,7 @@ nav a {
 nav a:hover {
   border-left: 3px solid #000;
   padding-left: calc(1rem - 3px);
+  font-weight: 600;
 }
 
 .wrapper {
@@ -98,7 +80,8 @@ main {
 }
 
 .content-header h1 {
-  font-size: 2.5rem;
+  font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
+  font-weight: 500;
   margin: 0;
 }
 
