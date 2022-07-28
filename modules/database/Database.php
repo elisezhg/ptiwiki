@@ -32,7 +32,7 @@ function getPage($title)
     global $conn;
     $resultat = $conn->prepare("
         SELECT content, username, lastModifiedDateTime
-        FROM Page INNER JOIN User
+        FROM Page LEFT JOIN User
         ON Page.lastModifiedIdUser = User.idUser
         WHERE title = :title
     ");
@@ -43,21 +43,19 @@ function getPage($title)
     return $tab[0];
 }
 
-function getRandomPage()
+function getRandomPageTitle()
 {
     global $conn;
     $resultat = $conn->prepare("
-        SELECT title, content, username, lastModifiedDateTime
-        FROM Page INNER JOIN User
-        ON Page.lastModifiedIdUser = User.idUser
+        SELECT title
+        FROM Page
         WHERE title != 'PageAccueil'
         ORDER BY RAND()
         LIMIT 1
     ");
-    $resultat->setFetchMode(PDO::FETCH_ASSOC);
     $resultat->execute();
-    $tab = $resultat->fetchAll();
-    return $tab[0];
+    $value = $resultat->fetchColumn();
+    return $value;
 }
 
 function savePage($title, $text, $idUser)
@@ -69,7 +67,7 @@ function savePage($title, $text, $idUser)
         VALUES
             (:title, :text, :idUser, CONVERT_TZ(NOW(),'SYSTEM','America/Montreal'))
     ");
-    echo "saving";
+    echo "saving with idUser = $idUser";
     $resultat->bindParam(':title', $title);
     $resultat->bindParam(':text', $text);
     $resultat->bindParam(':idUser', $idUser);
@@ -96,6 +94,23 @@ function getUser($username)
     return $tab[0];
 }
 
+function getAllUsers()
+{
+    global $conn;
+    $resultat = $conn->prepare("
+        SELECT username
+        FROM User
+        WHERE idRole != (
+            SELECT idRole
+            FROM Role
+            WHERE name = 'Admin'
+        )
+    ");
+    $resultat->execute();
+    $users = $resultat->fetchAll(PDO::FETCH_COLUMN, 0);
+    return $users;
+}
+
 function createUser($username, $password)
 {
     global $conn;
@@ -108,15 +123,14 @@ function createUser($username, $password)
     $resultat->bindParam(':username', $username);
     $resultat->bindParam(':passwordHash', $passwordHash);
     $resultat->execute();
-    echo "created acc";
     return $resultat;
 }
 
-function deleteUser($id)
+function deleteUser($username)
 {
     global $conn;
-    $resultat = $conn->prepare("DELETE FROM User WHERE idUser = :id");
-    $resultat->bindParam(':id', $id);
+    $resultat = $conn->prepare("DELETE FROM User WHERE username = :username");
+    $resultat->bindParam(':username', $username);
     $resultat->execute();
     return $resultat;
 }

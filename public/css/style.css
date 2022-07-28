@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+a {
+  color: inherit;
+}
+
 /* Header */
 
 header {
@@ -36,13 +40,18 @@ header .user {
 
 /* Navigation bar */
 
+.wrapper {
+  display: flex;
+  padding: 2rem;
+}
+
 nav {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
   font-size: 1.25rem;
   gap: 1.5rem;
-  min-width: 12.5rem;
+  min-width: 15rem;
 }
 
 nav a {
@@ -56,12 +65,6 @@ nav a:hover {
   border-left: 3px solid #000;
   padding-left: calc(1rem - 3px);
   font-weight: 600;
-}
-
-.wrapper {
-  display: flex;
-  padding: 2rem;
-  gap: 3.25rem;
 }
 
 /* Main content */
@@ -88,23 +91,22 @@ main {
 .content-header .actions {
   display: flex;
   align-items: center;
-  /* gap: 1em; */
   text-decoration: none;
 }
 
 .actions img {
   width: 20px;
   height: 20px;
-  /* background-color: lightblue; */
   border: 1px solid black;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   padding: 0.5rem;
-  margin-bottom: -5px;
+  margin: 0 -1px -1px 0;
+  vertical-align: bottom;
 }
 
 .actions .selected img {
-  border-bottom: 1px solid white;
+  border-bottom-color: white;
 }
 
 .last-modified {
@@ -117,11 +119,13 @@ main {
 /* Edit / Create */
 
 .edit-textarea {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   width: 100%;
   height: 500px;
   resize: vertical;
-  border-radius: 8px;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
 }
 
 button {
@@ -164,10 +168,6 @@ button {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-a {
-  color: inherit;
-}
-
 /* Login form */
 
 .form-container h1 {
@@ -194,11 +194,9 @@ a {
 
 .form-container input {
   width: 22rem;
-  /* height: 40px; */
   border-radius: 0.25rem;
   border: 1px solid black;
   padding: 1rem 0.5rem;
-  /* font-weight: 600; */
   margin-top: 0.5rem;
 }
 

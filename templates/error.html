@@ -14,13 +14,16 @@
         <span>PtiWiki</span>
       </div>
       <div class="user">
-        <?php if (isset($_SESSION['idUser'])) { ?>
-        <span><?php echo $_SESSION['idUser'] ?></span>
-        <a href="?op=logout">Déconnexion</a>
-        <img src="assets/logout.svg" alt="logout" />
+        <?php if ($isLoggedIn) { ?>
+        <span><?php echo $_SESSION['username'] ?></span>
+        <a
+          href="?action=logout<?=str_replace('?','&amp;',basename($_SERVER['REQUEST_URI'])) ?>"
+        >
+          <img src="assets/logout.svg" alt="logout" />
+        </a>
         <?php } else { ?>
-        <a href="?op=login">Connexion</a>
-        <a href="?op=signup">Inscription</a>
+        <a href="?action=login">Connexion</a>
+        <a href="?action=register">Inscription</a>
         <img src="assets/login.svg" alt="login" />
         <?php } ?>
       </div>
@@ -31,6 +34,9 @@
         <a href="?op=read&amp;file=PageAccueil">Accueil</a>
         <a href="?op=read&amp;file=random">Page aléatoire</a>
         <a href="?op=read&amp;file=all">Toutes les pages</a>
+        <?php if ($isAdmin) { ?>
+        <a href="?op=read&amp;user=all"> Liste des utilisateurs </a>
+        <?php } ?>
       </nav>
 
       <main>
