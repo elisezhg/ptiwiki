@@ -6,6 +6,16 @@ require_once '../modules/account/Register.php';
 require_once '../modules/database/Database.php';
 require_once '../modules/utils/MarkDown.php';
 
+$showActions = false;
+$isAdmin = false;
+$isLoggedIn = false;
+
+if (!empty($_SESSION['username']) && !empty($_SESSION['idUser'])) {
+    $isLoggedIn = true;
+    $showActions = true;
+    $isAdmin = false; //todo
+}
+
 //  analyser les paramètres d'entrée
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -15,12 +25,11 @@ if (!empty($_GET["action"])) {
         logout();
     } elseif ($action == 'login' || $action == 'register') {
         include '../templates/authentication.html';
-        return;
     } else {
         $errorMessage = 'Action non implémentée: ' . $action;
         include('../templates/error.html');
-        return;
     }
+    return;
 } elseif ($method == 'POST') {
     if ($_POST["cancel"]) {
         $op = "read";
@@ -33,6 +42,7 @@ if (!empty($_GET["action"])) {
     else $op = "read";
     if (array_key_exists("file", $_GET)) $file = $_GET["file"];
     else $file = "PageAccueil";
+    if (array_key_exists("user", $_GET)) $user = $_GET["user"];
 }
 
 if ($op != 'read' && empty($_SESSION['username'])) {
@@ -42,17 +52,45 @@ if ($op != 'read' && empty($_SESSION['username'])) {
 }
 
 
+// Files
+if ($file == 'all') {
+    $showActions = false;
+    $title = 'Toutes les pages';
+    $items = getAllPages();
+    include('../templates/page.html');
+    return;
+} elseif ($file == 'random') {
+    $randomPageTitle = getRandomPageTitle();
+    header('location: ?op=read&file=' . $randomPageTitle);
+    return;
+}
+
+// Users
+if ($isAdmin && $user == 'all' && $op == 'read') {
+    $showActions = false;
+    $title = 'Liste des utilisateurs';
+    $items = getAllUsers();
+    include('../templates/page.html');
+    return;
+} elseif ($isAdmin && $user != null && $op == 'delete') {
+    $showActions = false;
+    deleteUser($user);
+    header('location: ?op=read&user=all');
+    return;
+}
+
+$title = $file == "PageAccueil" ? "Accueil" : $file;
+
 switch ($op) {
     case 'create':
+        $showActions = false;
         $title = "Création de la page $file";
-        $content = '';
         include('../templates/page.html');
         break;
     case 'read':
     case 'delete':
-        $page = $file != 'random' ? getPage($file) : getRandomPage();
-        $file = $file != 'random' ? $file : $page['title'];
-        $title = $file == "PageAccueil" ? "Accueil" : $file;
+        $page = getPage($file);
+        if ($page == null) header('location: ?op=create&file=' . $file);
         $datetime = explode(" ", $page['lastModifiedDateTime']);
         $date = $datetime[0];
         $time = $datetime[1];
@@ -62,8 +100,6 @@ switch ($op) {
         break;
     case 'update':
         $page = getPage($file);
-        $file = $file != 'random' ? $file : $page['title'];
-        $title = $file == "PageAccueil" ? "Accueil" : $file;
         $content = $page['content'];
         include('../templates/page.html');
         break;

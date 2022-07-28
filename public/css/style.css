@@ -1,30 +1,10 @@
-/* Fonts */
-
-@font-face {
-  font-family: 'Inter';
-  src: url(../assets/fonts/Inter/Inter-Regular.ttf);
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url(../assets/fonts/Inter/Inter-SemiBold.ttf);
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url(../assets/fonts/Inter/Inter-Bold.ttf);
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: 'Roboto Mono';
-  src: url(../assets/fonts/Roboto_Mono/RobotoMono-Medium.ttf);
-}
-
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
+}
+
+a {
+  color: inherit;
 }
 
 /* Header */
@@ -33,15 +13,11 @@ header {
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 1rem;
+  height: 3.5rem;
+  box-sizing: border-box;
 }
 
-header .logo {
-  font-size: 1.5rem;
-  font-family: 'Roboto Mono', sans-serif;
-}
-
-header .user {
-  font-weight: 600;
+header div {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -52,16 +28,30 @@ header img {
   height: 25px;
 }
 
+header .logo {
+  font-size: 1.5rem;
+  transform: scale(1, 1.1);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+header .user {
+  font-weight: 600;
+}
+
 /* Navigation bar */
+
+.wrapper {
+  display: flex;
+  padding: 2rem;
+}
 
 nav {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
   font-size: 1.25rem;
-  font-weight: 600;
   gap: 1.5rem;
-  min-width: 12.5rem;
+  min-width: 15rem;
 }
 
 nav a {
@@ -74,12 +64,7 @@ nav a {
 nav a:hover {
   border-left: 3px solid #000;
   padding-left: calc(1rem - 3px);
-}
-
-.wrapper {
-  display: flex;
-  padding: 2rem;
-  gap: 3.25rem;
+  font-weight: 600;
 }
 
 /* Main content */
@@ -98,30 +83,30 @@ main {
 }
 
 .content-header h1 {
-  font-size: 2.5rem;
+  font-family: 'Linux Libertine', 'Georgia', 'Times', serif;
+  font-weight: 500;
   margin: 0;
 }
 
 .content-header .actions {
   display: flex;
   align-items: center;
-  /* gap: 1em; */
   text-decoration: none;
 }
 
 .actions img {
   width: 20px;
   height: 20px;
-  /* background-color: lightblue; */
   border: 1px solid black;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   padding: 0.5rem;
-  margin-bottom: -5px;
+  margin: 0 -1px -1px 0;
+  vertical-align: bottom;
 }
 
 .actions .selected img {
-  border-bottom: 1px solid white;
+  border-bottom-color: white;
 }
 
 .last-modified {
@@ -134,11 +119,13 @@ main {
 /* Edit / Create */
 
 .edit-textarea {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   width: 100%;
   height: 500px;
   resize: vertical;
-  border-radius: 8px;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
 }
 
 button {
@@ -181,10 +168,6 @@ button {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-a {
-  color: inherit;
-}
-
 /* Login form */
 
 .form-container h1 {
@@ -211,11 +194,9 @@ a {
 
 .form-container input {
   width: 22rem;
-  /* height: 40px; */
   border-radius: 0.25rem;
   border: 1px solid black;
   padding: 1rem 0.5rem;
-  /* font-weight: 600; */
   margin-top: 0.5rem;
 }
 

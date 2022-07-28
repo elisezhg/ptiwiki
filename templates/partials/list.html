@@ -1,0 +1,14 @@
+<ul>
+  <?php foreach($items as $key=>$item): ?>
+  <li>
+    <?php if ($user == 'all') { ?>
+    <?= $item ?>
+    <a href="?op=delete&amp;user=<?= $item ?>">
+      <img src="assets/trash.svg" alt="trash" />
+    </a>
+    <?php } else { ?>
+    <a href="?op=read&amp;file=<?= $item ?>"><?= $item ?></a>
+    <?php } ?>
+  </li>
+  <?php endforeach; ?>
+</ul>
