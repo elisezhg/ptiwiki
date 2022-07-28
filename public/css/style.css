@@ -2,24 +2,24 @@
 
 @font-face {
   font-family: 'Inter';
-  src: url(../assets/fonts/Inter/static/Inter-Regular.ttf);
+  src: url(../assets/fonts/Inter/Inter-Regular.ttf);
 }
 
 @font-face {
   font-family: 'Inter';
-  src: url(../assets/fonts/Inter/static/Inter-SemiBold.ttf);
+  src: url(../assets/fonts/Inter/Inter-SemiBold.ttf);
   font-weight: 600;
 }
 
 @font-face {
   font-family: 'Inter';
-  src: url(../assets/fonts/Inter/static/Inter-Bold.ttf);
+  src: url(../assets/fonts/Inter/Inter-Bold.ttf);
   font-weight: 700;
 }
 
 @font-face {
   font-family: 'Roboto Mono';
-  src: url(../assets/fonts/Roboto_Mono/static/RobotoMono-Medium.ttf);
+  src: url(../assets/fonts/Roboto_Mono/RobotoMono-Medium.ttf);
 }
 
 body {
