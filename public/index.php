@@ -5,6 +5,7 @@ require_once '../modules/account/Logout.php';
 require_once '../modules/account/Register.php';
 require_once '../modules/database/Database.php';
 require_once '../modules/utils/MarkDown.php';
+require_once '../modules/utils/UrlManipulation.php';
 
 $showActions = false;
 $isAdmin = false;
@@ -13,7 +14,7 @@ $isLoggedIn = false;
 if (!empty($_SESSION['username']) && !empty($_SESSION['idUser'])) {
     $isLoggedIn = true;
     $showActions = true;
-    $isAdmin = false; //todo
+    $isAdmin = isAdmin($_SESSION['username']);
 }
 
 //  analyser les paramètres d'entrée

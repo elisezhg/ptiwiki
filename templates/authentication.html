@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="assets/logo.svg" type="image/svg">
     <link rel="stylesheet" href="css/style.css" />
     <title>
       PtiWiki - <?=$action == "login" ? "Connexion" : "Inscription" ?>
@@ -11,15 +12,16 @@
   </head>
   <body>
     <header>
-      <div class="logo">
+      <a class="logo" href="<?= getenv(BASE_URL) ?>">
         <img src="assets/logo.svg" alt="logo" />
         <span>PtiWiki</span>
-      </div>
+      </a>
     </header>
 
     <main class="form-container">
-      <a href="/" class="cancel-btn">Annuler</a>
+      <a href="<?= getenv('BASE_URL') ?>" class="cancel-btn">Annuler</a>
       <h1><?=$action == "login" ? "Connexion" : "Inscription" ?></h1>
+      <p class="error-msg"><?= $errorMessage ?></p>
       <form action="" method="POST">
         <input
           type="hidden"
@@ -50,9 +52,9 @@
           <button type="submit" class="form-btn">
             <?=$action == "login" ? "Se connecter" : "S'inscrire" ?>
           </button>
-          <a href="?action=<?=$action == 'login' ? 'register' : 'login' ?>"
-            ><?=$action == "login" ? "S'inscrire" : "Se connecter" ?></a
-          >
+          <a href="?action=<?=$action == 'login' ? 'register' : 'login' ?>">
+            <?=$action == "login" ? "S'inscrire" : "Se connecter" ?>
+          </a>
         </div>
       </form>
     </main>

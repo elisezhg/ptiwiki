@@ -1,3 +1,11 @@
+:root {
+  --background: #FDF0D5;
+  --primary-700: #003049;
+  --primary-400: #669BBC;
+  --secondary-700: #780000;
+  --secondary-400: #C1121F;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
@@ -17,7 +25,8 @@ header {
   box-sizing: border-box;
 }
 
-header div {
+header > *,
+.user > a {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -32,6 +41,8 @@ header .logo {
   font-size: 1.5rem;
   transform: scale(1, 1.1);
   font-family: 'Courier New', Courier, monospace;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 header .user {
@@ -80,6 +91,7 @@ main {
   gap: 1rem;
   border-bottom: 1px solid black;
   margin-bottom: 2rem;
+  height: 38px;
 }
 
 .content-header h1 {
@@ -179,7 +191,7 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -75%);
   border: 1px solid black;
   border-radius: 0.5rem;
   padding: 2rem 3rem;
@@ -190,6 +202,19 @@ button {
   flex-direction: column;
   align-items: center;
   gap: 3rem;
+}
+
+.form-container .error-msg {
+  background-color: #fcc;
+  padding: 1rem;
+  text-align: center;
+  color: red;
+  font-size: 0.75rem;
+  margin: 2rem 0;
+}
+
+.form-container .error-msg:empty {
+  display: none;
 }
 
 .form-container input {

@@ -1,6 +1,6 @@
 <?php
 
-include('Config.php');
+require_once __DIR__ . '/../utils/Config.php';
 
 $conn = getConnection();
 
@@ -63,9 +63,9 @@ function savePage($title, $text, $idUser)
     global $conn;
     $resultat = $conn->prepare("
         REPLACE INTO
-            Page (title, content, lastModifiedIdUser, lastModifiedDateTime)
+            Page (title, content, lastModifiedIdUser)
         VALUES
-            (:title, :text, :idUser, CONVERT_TZ(NOW(),'SYSTEM','America/Montreal'))
+            (:title, :text, :idUser)
     ");
     echo "saving with idUser = $idUser";
     $resultat->bindParam(':title', $title);
@@ -117,13 +117,14 @@ function createUser($username, $password)
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
     $resultat = $conn->prepare("
         INSERT INTO
-            User (username, passwordHash)
-        VALUES (:username, :passwordHash)
+            User (username, passwordHash, idRole)
+        VALUES
+            (:username, :passwordHash, (SELECT idRole FROM Role WHERE name = 'User'))
     ");
     $resultat->bindParam(':username', $username);
     $resultat->bindParam(':passwordHash', $passwordHash);
     $resultat->execute();
-    return $resultat;
+    return $resultat ? $conn->lastInsertId() : false;
 }
 
 function deleteUser($username)
@@ -133,4 +134,23 @@ function deleteUser($username)
     $resultat->bindParam(':username', $username);
     $resultat->execute();
     return $resultat;
+}
+
+function isAdmin($username)
+{
+    global $conn;
+    $resultat = $conn->prepare("
+        SELECT idUser
+        FROM User
+        INNER JOIN Role
+        ON User.idRole = Role.idRole
+        WHERE username = :username
+        AND Role.name = 'Admin'
+        LIMIT 1
+    ");
+    $resultat->setFetchMode(PDO::FETCH_ASSOC);
+    $resultat->bindParam(':username', $username);
+    $resultat->execute();
+    $val = $resultat->fetchColumn();
+    return $val != null;
 }

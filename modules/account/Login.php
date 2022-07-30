@@ -7,22 +7,24 @@ session_start();
 $method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'POST' && $_POST['action'] == 'login') {
   if (isset($_POST['username']) & isset($_POST['password'])) {
-    try {
-      $user = getUser($_POST['username']);
-      $hash = $user['passwordHash'];
+    if (!empty($_POST['username']) && !empty($_POST['password'])) {
+      try {
+        $user = getUser($_POST['username']);
+        $hash = $user['passwordHash'];
 
-      if (password_verify($_POST['password'], $hash)) {
-        $_SESSION['idUser'] = $user['idUser'];
-        $_SESSION['username'] = $user['username'];
-        header('location: /');
-      } else {
-        echo "Mot de passe erroné"; //todo error handling
+        if (password_verify($_POST['password'], $hash)) {
+          $_SESSION['idUser'] = $user['idUser'];
+          $_SESSION['username'] = $user['username'];
+          header('location: ' . getenv('BASE_URL'));
+        } else {
+          $errorMessage = "L'identifiant ou le mot de passe est incorrect";
+        }
+      } catch (PDOException $e) {
+        $errorMessage = 'Erreur lors du login: ' . $e->getMessage();
+        include('../../templates/error.html');
       }
-    } catch (PDOException $e) {
-      $errorMessage = 'Erreur lors du login: ' . $e->getMessage();
-      include('../../templates/error.html');
+    } else {
+      $errorMessage = 'Vous devez remplir tous les champs!';
     }
-  } else {
-    echo "";
   }
 }

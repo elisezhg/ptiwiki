@@ -4,27 +4,27 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="assets/logo.svg" type="image/svg" />
     <link rel="stylesheet" href="css/style.css" />
     <title><?php echo $title ?></title>
   </head>
   <body>
     <header>
-      <div class="logo">
+      <a class="logo" href="<?= getenv(BASE_URL) ?>">
         <img src="assets/logo.svg" alt="logo" />
         <span>PtiWiki</span>
-      </div>
+      </a>
       <div class="user">
         <?php if ($isLoggedIn) { ?>
         <span><?php echo $_SESSION['username'] ?></span>
-        <a
-          href="?action=logout<?=str_replace('?','&amp;',basename($_SERVER['REQUEST_URI'])) ?>"
-        >
+        <a href="<?=getLogoutUrl() ?>">
           <img src="assets/logout.svg" alt="logout" />
         </a>
         <?php } else { ?>
-        <a href="?action=login">Connexion</a>
         <a href="?action=register">Inscription</a>
-        <img src="assets/login.svg" alt="login" />
+        <a href="?action=login"
+          >Connexion <img src="assets/login.svg" alt="login"
+        /></a>
         <?php } ?>
       </div>
     </header>
