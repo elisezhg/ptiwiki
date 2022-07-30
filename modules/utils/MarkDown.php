@@ -58,7 +58,7 @@ function viewLinkCallback($matches)
         $style = "";
     } else { // new file, make the link in red and set op to create
         $op = "create";
-        $style = " style='color:red'";
+        $style = " style='color:var(--secondary-700)'";
     }
     return "<a href='?op=$op&file=$matches[0]'$style>$matches[1]</a>";
 }

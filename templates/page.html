@@ -75,7 +75,7 @@
 
         <div class="content">
           <!-- show page content -->
-          <?php if ($items != null) { ?>
+          <?php if ($user == 'all' or $file == 'all') { ?>
           <?php include_once '../templates/partials/list.html' ?>
           <?php } elseif ($op == 'read') { ?>
           <?php include_once '../templates/partials/content.html' ?>
