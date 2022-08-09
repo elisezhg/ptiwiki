@@ -150,10 +150,15 @@ function showUsers($op, $user)
 
 function processAction($action)
 {
-    global $errorMessage;
+    global $showActions, $isAdmin, $isLoggedIn, $errorMessage;
+
     switch ($action) {
         case 'login':
         case 'register':
+            if ($isLoggedIn) {
+                header('location: ' . getURLWithoutActionParam());
+                break;
+            }
             include '../templates/authentication.html';
             break;
         case 'logout':
