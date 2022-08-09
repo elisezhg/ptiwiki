@@ -74,9 +74,11 @@
         </div>
 
         <div class="content">
-          <!-- show page content -->
+          <!-- show list -->
           <?php if ($user == 'all' or $file == 'all') { ?>
           <?php include_once '../templates/partials/list.html' ?>
+          
+          <!-- show page content -->
           <?php } elseif ($op == 'read') { ?>
           <?php include_once '../templates/partials/content.html' ?>
 

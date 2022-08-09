@@ -21,7 +21,6 @@ if ($method == 'POST' && $_POST['action'] == 'login') {
         }
       } catch (PDOException $e) {
         $errorMessage = 'Erreur lors du login: ' . $e->getMessage();
-        include('../../templates/error.html');
       }
     } else {
       $errorMessage = 'Vous devez remplir tous les champs!';

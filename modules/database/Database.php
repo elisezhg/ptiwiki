@@ -67,7 +67,6 @@ function savePage($title, $text, $idUser)
         VALUES
             (:title, :text, :idUser)
     ");
-    echo "saving with idUser = $idUser";
     $resultat->bindParam(':title', $title);
     $resultat->bindParam(':text', $text);
     $resultat->bindParam(':idUser', $idUser);

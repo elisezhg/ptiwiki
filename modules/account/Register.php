@@ -14,11 +14,9 @@ if ($method == 'POST' && $_POST['action'] == 'register') {
           header('location: ' . getenv('BASE_URL'));
         } else {
           $errorMessage = 'Erreur lors de la création de compte: ' . $e->getMessage();
-          include('../../templates/error.html');
         }
       } catch (PDOException $e) {
         $errorMessage = 'Erreur lors de la création de compte: ' . $e->getMessage();
-        include('../../templates/error.html');
       }
     } else {
       $errorMessage = 'Vous devez remplir tous les champs!';
